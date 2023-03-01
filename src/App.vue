@@ -1,6 +1,6 @@
 <script setup>
 import { ref,computed } from 'vue';
-const question =ref([
+const questions =ref([
   {
     question: 'Why is AWS more economical than traditional data centers for applications with varying compute workloads?',
     answer:0,
@@ -110,11 +110,43 @@ const question =ref([
 ])
 const  quizCompleted=ref(false)
 const currentQuestion =ref(0)
-const score =c
+const score =computed(()=>{
+  let value =0
+  questions.value.map(q=>{
+    if(q.selected==q.answer){
+      value++
+    }
+  })
+  return value
+})
+const getCurrentQuestion=computed(()=>{
+  let question=questions.value[currentQuestion.value]
+  question.index =currentQuestion.value
+  return question
+})
+const SetArnswer= evt =>{
+  questions.value[currentQuestion.value].selected=evt.target.value
+  evt.target.value=null
+}
+const NextQuestion =()=>{
+  currentQuestion.value++
+  if(currentQuestion.value < questions.value.length-1){
+    currentQuestion.value++
+  }else{
+    quizCompleted.value=true
+  }
+}
 </script>
 
 <template>
-  <h1>HELLO</h1>
+  <main class="app">
+    <h1>The Quiz</h1>
+    <section class="quiz">
+      <div class="quiz-info">
+        <span></span>
+      </div>
+    </section>
+  </main>
 </template>
 
 <style>
