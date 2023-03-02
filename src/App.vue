@@ -143,7 +143,7 @@ const NextQuestion =()=>{
     <h1>The Quiz</h1>
     <section class="quiz">
       <div class="quiz-info">
-        <span></span>
+        <span class="question">{{ getCurrentQuestion }}</span>
       </div>
     </section>
   </main>
