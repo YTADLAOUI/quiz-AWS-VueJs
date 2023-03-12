@@ -3,7 +3,7 @@ import { ref,computed } from 'vue';
 const questions =ref([
   {
     question: 'Why is AWS more economical than traditional data centers for applications with varying compute workloads?',
-    answer:0,
+    answer:1,
     options:[
       'Amazon EC2 costs are billed on a monthly basis',
       'Users retain full administrative access to their Amazon EC2 instances',
@@ -23,7 +23,7 @@ const questions =ref([
   },
   {
     question: 'Which AWS offering enables users to find, buy, and immediately start using software solutions in their AWS environment?',
-    answer:2,
+    answer:1,
     options:[
       'AWS Config',
       'AWS OpsWorks',
@@ -33,7 +33,7 @@ const questions =ref([
   },
   {
     question: 'Which AWS networking service enables a company to create a virtual network within AWS?',
-    answer:3,
+    answer:1,
     options:[
       'AWS Config',
       'Amazon Route 53',
@@ -43,7 +43,7 @@ const questions =ref([
   },
   {
     question: 'Which of the following is an AWS responsibility under the AWS shared responsibility model?',
-    answer:4,
+    answer:1,
     options:[
       'Configuring third-party applications',
       'Maintaining physical hardware',
@@ -53,7 +53,7 @@ const questions =ref([
   },
   {
     question: 'Which component of the AWS global infrastructure does Amazon CloudFront use to ensure low-latency delivery?',
-    answer:5,
+    answer:1,
     options:[
       'AWS Regions',
       'Edge locations',
@@ -64,7 +64,7 @@ const questions =ref([
   },
   {
     question: 'How would a system administrator add an additional layer of login security to user\'s AWSManagement Console?',
-    answer:6,
+    answer:1,
     options:[
       'Use Amazon Cloud Directory',
       'Audit AWS Identity and Access Management (IAM) roles',
@@ -75,7 +75,7 @@ const questions =ref([
   },
   {
     question: 'Which service can identify the user that made the API call when an Amazon EC2 instance is terminated?',
-    answer:7,
+    answer:1,
     options:[
       'AWS Trusted Advisor',
       'AWS CloudTrail',
@@ -86,7 +86,7 @@ const questions =ref([
   },
   {
     question: 'Which service would be used to send alerts based on Amazon CloudWatch alarms?',
-    answer:8,
+    answer:1,
     options:[
       ' Amazon Simple Notification Service (Amazon SNS)',
       'AWS CloudTrail',
@@ -97,7 +97,7 @@ const questions =ref([
   },
   {
     question: 'Where can a user find information about prohibited actions on the AWS infrastructure',
-    answer:9,
+    answer:1,
     options:[
       'AWS Trusted Advisor',
       'AWS Identity and Access Management (IAM)',
@@ -109,16 +109,18 @@ const questions =ref([
 
 ])
 const  quizCompleted=ref(false)
-const currentQuestion =ref(0)
+const currentQuestion =ref(0);
+console.log(questions.value[currentQuestion.value])
 const score =computed(()=>{
   let value =0
-  questions.value.map(q=>{
+  questions.value.forEach(q=>{
     if(q.selected==q.answer){
       value++
     }
   })
   return value
 })
+
 const getCurrentQuestion=computed(()=>{
   let question=questions.value[currentQuestion.value]
   question.index =currentQuestion.value
@@ -129,7 +131,7 @@ const SetArnswer= evt =>{
   evt.target.value=null
 }
 const NextQuestion =()=>{
-  currentQuestion.value++
+  //currentQuestion.value++
   if(currentQuestion.value < questions.value.length-1){
     currentQuestion.value++
   }else{
