@@ -1,5 +1,6 @@
 <script setup>
 import { ref,computed } from 'vue';
+import hedear from './components/hedear.vue'
 const questions =ref([
   {
     question: 'Why is AWS more economical than traditional data centers for applications with varying compute workloads?',
@@ -110,15 +111,9 @@ const questions =ref([
 ])
 const  quizCompleted=ref(false)
 const currentQuestion =ref(0);
-console.log(questions.value[currentQuestion.value])
+console.log(questions.value)
 const score =computed(()=>{
-  let value =0
-  questions.value.forEach(q=>{
-    if(q.selected==q.answer){
-      value++
-    }
-  })
-  return value
+  return questions.value.filter(q=>q.selected==q.answer).length;
 })
 
 const getCurrentQuestion=computed(()=>{
@@ -128,7 +123,6 @@ const getCurrentQuestion=computed(()=>{
 })
 const SetArnswer= evt =>{
   questions.value[currentQuestion.value].selected=evt.target.value
-  evt.target.value=null
 }
 const NextQuestion =()=>{
   //currentQuestion.value++
@@ -142,38 +136,43 @@ const NextQuestion =()=>{
 
 <template>
   <main class="app">
-    <h1>The Quiz</h1>
-    <section class="quiz" v-if="!quizCompleted">
-      <div class="quiz-info">
-        <span class="question">{{ getCurrentQuestion.question }}</span>
-        <span class="score">score {{score}}/{{questions.length}}</span>
-        <div class="options">
-          <label v-for="(option,index) in getCurrentQuestion.options" :key="index"
-          :class="`option ${
-            getCurrentQuestion.selected == index ? index == getCurrentQuestion.answer ?'correct':'wrong':''}
-            ${
-                getCurrentQuestion.selected != null && index !=getCurrentQuestion.selected ? 'disabled' : ''
-            }`">
-        <input type="radio"
-        :name="getCurrentQuestion.index"
-        :value="index"
-        v-model="getCurrentQuestion.selected"
-        :disabled="getCurrentQuestion.selected"
-        @change="SetArnswer">
-        <span>{{option}}</span>
-          </label>
-        </div>
+    <hedear calss="logo"></hedear>
+    <div class="Container">
+      <div>
+        <h1>The Quiz</h1>
+        <section class="quiz" v-if="!quizCompleted">
+          <div class="quiz-info">
+            <span class="question">{{ getCurrentQuestion.question }}</span>
+            <!-- <span class="score">score {{score}}/{{questions.length}}</span> -->
+            <div class="options">
+              <label v-for="(option,index) in getCurrentQuestion.options" :key="index"
+              :class="`option ${
+                getCurrentQuestion.selected == index ? index == getCurrentQuestion.answer ?'correct':'wrong':''}
+                ${
+                    getCurrentQuestion.selected != null && index !=getCurrentQuestion.selected ? 'disabled' : ''
+                }`">
+            <input type="radio"
+            :name="getCurrentQuestion.index"
+            :value="index"
+            v-model="getCurrentQuestion.selected"
+            :disabled="getCurrentQuestion.selected"
+            @change="SetArnswer">
+            <span>{{option}}</span>
+              </label>
+            </div>
+          </div>
+          <button @click="NextQuestion"
+          :disabled="!getCurrentQuestion.selected">
+            {{getCurrentQuestion.index==questions.length-1 ? 'finish' :getCurrentQuestion.selected == null ? 'Select an option' :'Next Question'
+            }}
+          </button>
+        </section>
+        <section v-else>
+          <h2>You have finish the quiz!</h2>
+          <p> Your score is {{score}}/{{questions.length}}</p>
+        </section>
       </div>
-      <button @click="NextQuestion"
-      :disabled="!getCurrentQuestion.selected">
-        {{getCurrentQuestion.index==questions.length-1 ? 'finish' :getCurrentQuestion.selected == null ? 'Select an option' :'Next Question'
-        }}
-      </button>
-    </section>
-    <section v-else>
-      <h2>You have finish the quiz!</h2>
-      <p> Your score is {{score}}/{{questions.length}}</p>
-    </section>
+    </div>
   </main>
 </template>
 
@@ -184,8 +183,18 @@ const NextQuestion =()=>{
   box-sizing: border-box;
   font-family: 'Montserrat',sans-serif;
 }
+.logo{
+  width: 80px;
+  height: 70px;
+}
+.Container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
 body {
-  background-color: #271C36;
-  color: white;
+  background-color: #e7eb09;
+  color: rgb(0, 0, 0);
 }
 </style>
