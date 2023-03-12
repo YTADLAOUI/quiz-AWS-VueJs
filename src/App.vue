@@ -144,6 +144,8 @@ const NextQuestion =()=>{
     <section class="quiz">
       <div class="quiz-info">
         <span class="question">{{ getCurrentQuestion }}</span>
+        <span class="score">score {{score}}/{{questions.length}}</span>
+        <div class="options"></div>
       </div>
     </section>
   </main>
