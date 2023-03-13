@@ -1,6 +1,7 @@
 <script setup>
 import { ref,computed } from 'vue';
 import hedear from './components/hedear.vue'
+import steper from './components/steper.vue'
 const questions =ref([
   {
     question: 'Why is AWS more economical than traditional data centers for applications with varying compute workloads?',
@@ -111,32 +112,34 @@ const questions =ref([
 ])
 const  quizCompleted=ref(false)
 const currentQuestion =ref(0);
-console.log(questions.value)
+//  console.log(questions.value)
 const score =computed(()=>{
   return questions.value.filter(q=>q.selected==q.answer).length;
 })
-
 const getCurrentQuestion=computed(()=>{
   let question=questions.value[currentQuestion.value]
-  question.index =currentQuestion.value
   return question
 })
 const SetArnswer= evt =>{
   questions.value[currentQuestion.value].selected=evt.target.value
 }
+       var active=ref(true).value;
+       console.log(active)
+      var desactive=ref(false).value;
 const NextQuestion =()=>{
-  //currentQuestion.value++
   if(currentQuestion.value < questions.value.length-1){
-    currentQuestion.value++
+    currentQuestion.value++ 
   }else{
-    quizCompleted.value=true
+    quizCompleted.value=true;
+      active=ref(false).value;
+      desactive=ref(true).value
   }
 }
 </script>
-
 <template>
   <main class="app">
     <hedear calss="logo"></hedear>
+    <steper :isactive="active" :active='desactive' ></steper>
     <div class="Container">
       <div>
         <h1>The Quiz</h1>
@@ -167,7 +170,7 @@ const NextQuestion =()=>{
             }}
           </button>
         </section>
-        <section v-else>
+        <section v-else >
           <h2>You have finish the quiz!</h2>
           <p> Your score is {{score}}/{{questions.length}}</p>
         </section>
@@ -191,10 +194,75 @@ const NextQuestion =()=>{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  padding: 2rem;
+  min-height: 80vh;
+}
+h1{
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+.quiz{
+  background-color: #ebc209;
+  padding: 1rem;
+  width: 100%;
+  max-width: 640px;
+}
+.quiz-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom:1rem;
+}
+.quiz-info .question {
+  color: #000000;
+  font-size :1.25rem;
+  margin-bottom:10px ;
+}
+.options{
+  display: flex;
+  flex-direction:column ;
+  margin-bottom: 0.5rem;
+  border-radius:0.5rem;
+  cursor:pointer;
+}
+.option:hover {
+  background-color:#e7eb09;
+}
+.option.correct {
+  background-color:rgb(46, 209, 46);
+}
+.option.wrong{
+  background-color: rgb(236, 65, 65);
+}
+.option.disabled{
+  opacity:0.5;
+}
+.option input {
+  display: none;
+}
+button{
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background-color:
+  rgb(121, 243, 121);
+  color:#3f3e3c;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size:1.25rem;
+  border-radius: 0.5rem;
+}
+button:disabled{
+  opacity: 0.5;
+}
+h2{
+  font-size:2rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 body {
-  background-color: #e7eb09;
+  background-color: #f1f19c;
   color: rgb(0, 0, 0);
 }
 </style>
