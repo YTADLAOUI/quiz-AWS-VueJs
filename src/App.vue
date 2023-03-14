@@ -112,10 +112,13 @@ const questions =ref([
 ])
 const  quizCompleted=ref(false)
 const currentQuestion =ref(0);
+// const progress = ref(0);
 //  console.log(questions.value)
 const score =computed(()=>{
+  console.log(questions.value.filter(q=>q.selected!=q.answer))
   return questions.value.filter(q=>q.selected==q.answer).length;
 })
+
 const getCurrentQuestion=computed(()=>{
   let question=questions.value[currentQuestion.value]
   return question
@@ -129,6 +132,7 @@ const SetArnswer= evt =>{
 const NextQuestion =()=>{
   if(currentQuestion.value < questions.value.length-1){
     currentQuestion.value++ 
+    
   }else{
     quizCompleted.value=true;
       active=ref(false).value;
@@ -146,7 +150,7 @@ const NextQuestion =()=>{
         <section class="quiz" v-if="!quizCompleted">
           <div class="quiz-info">
             <span class="question">{{ getCurrentQuestion.question }}</span>
-            <!-- <span class="score">score {{score}}/{{questions.length}}</span> -->
+            <span class="pro">progress {{currentQuestion+1}}/{{questions.length}}</span>
             <div class="options">
               <label v-for="(option,index) in getCurrentQuestion.options" :key="index"
               :class="`option ${
@@ -197,9 +201,17 @@ const NextQuestion =()=>{
   padding: 2rem;
   min-height: 80vh;
 }
+.pro{
+  background-color: aliceblue;
+  width: 20%;
+  padding: 10px;
+  border-radius: 10px;
+}
 h1{
   font-size: 2rem;
   margin-bottom: 2rem;
+     display: flex;
+    justify-content: center;
 }
 .quiz{
   background-color: #ebc209;
@@ -226,7 +238,14 @@ h1{
   cursor:pointer;
 }
 .option:hover {
-  background-color:#e7eb09;
+  background-color:#0932eb;
+}
+.option{
+  border: #757575;
+  background: #292827;
+  padding: 1%;
+  margin-top: 20px;
+  color: aliceblue;
 }
 .option.correct {
   background-color:rgb(46, 209, 46);
@@ -264,5 +283,10 @@ h2{
 body {
   background-color: #f1f19c;
   color: rgb(0, 0, 0);
+}
+p {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
 }
 </style>
